@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Car Rental</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://icons.iconarchive.com/icons/iconsmind/outline/256/Car-2-icon.png">
+</head>
+<body>
+  <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+  <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/staging/df-messenger.js"></script>
+  <df-messenger
+  project-id="vertexai-mlops-workshops"
+  oauth-client-id="750954523766-sngolk08gjqfhrc3vkkiohiknoabsit6.apps.googleusercontent.com"
+  agent-id="568c9984-4da7-4db3-a517-1932890bcefe"
+  language-code="en"
+  intent="WELCOME"
+  gcs-upload="dfcx_public_demos"
+  allow-feedback="all">
+  <df-messenger-chat-bubble
+    bot-actor-image="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Google_Bard_logo.svg/2048px-Google_Bard_logo.svg.png"
+    user-actor-image="https://i.pinimg.com/564x/c1/33/ae/c133ae3cef1d27d6bdb3e8e897433856.jpg"
+    chat-title-icon="https://icons.iconarchive.com/icons/iconsmind/outline/256/Car-2-icon.png" 
+    chat-title="Car Rental"
+    enable-file-upload>
+  </df-messenger-chat-bubble>
+</df-messenger>
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    --df-messenger-primary-color: #90acc9;
+    --df-messenger-font-color: #90acc9;
+    --df-messenger-titlebar-background: #ffffff;
+    --df-messenger-titlebar-font-color: #90acc9;
+    --df-messenger-input-inner-padding: 0 48px;
+  }
+</style>
+<script>
+  const dfMessenger = document.querySelector('df-messenger');
+  dfMessenger.addEventListener('df-list-element-clicked', function (event) {
+      const dealer = event.detail.event;
+      const metadata = {
+          "parameters": {
+              "dealer-name":dealer
+          }
+      };
+      dfMessenger.setQueryParameters(metadata);
+      event.preventDefault();
+      dfMessenger.sendRequest('event','DEALER'); 
+  });
+  dfMessenger.addEventListener('df-file-upload-completed', function (event) {
+      dfMessenger.sendRequest('query','file uploaded');
+  });
+  // An example of handling events: Navigate to the first suggested URL.
+  dfMessenger.addEventListener('df-url-suggested', function (event) {
+    if (Array.isArray(event.detail.suggestedUrls) &&
+      event.detail.suggestedUrls.length) {
+        window.open(
+          event.detail.suggestedUrls[0],
+          '_blank' // <- This is what makes it open in a new window.
+        );
+    }
+  });
+</script>
+</body>
+</html>
