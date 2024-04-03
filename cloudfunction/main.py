@@ -22,13 +22,12 @@ def submit_multimodal_prompt(project_id: str, location: str, image_path: str, pr
     print("Gemini Output: " + response.text)
     return response.text
 
-def check_expiration_date(file_path: str):
+def check_expiration_date(project_id: str, region: str, file_path: str):
     #  run multimodal prompt
     prompt = "extract the expiration date from the driving license"
-    exp_date_str = submit_multimodal_prompt('your-project-id','your-region',file_path,prompt)
+    exp_date_str = submit_multimodal_prompt(project_id,region,file_path,prompt)
 
-    # check whether the driving license is still valid
-    # based on the expiration date
+    # check whether the driving license is still valid based on the expiration date
     exp_date = datetime.strptime(exp_date_str.replace(" ", ""), '%m/%d/%Y')
     now_date = datetime.now()
 
@@ -37,10 +36,10 @@ def check_expiration_date(file_path: str):
 
     return False
 
-def check_driver_age(file_path: str):
+def check_driver_age(project_id: str, region: str, file_path: str):
     #  run multimodal prompt
     prompt = "extract the date of birth from the driving license"
-    dob_str = submit_multimodal_prompt('your-project-id','your-region',file_path,prompt)
+    dob_str = submit_multimodal_prompt(project_id,region,file_path,prompt)
 
     # check whether the driver is > 21 years, as requested from some car rental companies
     dob_date = datetime.strptime(dob_str.replace(" ", ""), '%m/%d/%Y')
@@ -64,12 +63,16 @@ def validate_driving_license(request):
     """
     req = request.get_json()
     file_path = 'gs://' + str(req["sessionInfo"]["parameters"]["files"][0])
+
+    # CHANGE THESE PARAMS
+    project_id = 'your-project-id'
+    region = 'your-region'
     
     # check expiration date
-    is_exp_date_valid = check_expiration_date(file_path)
+    is_exp_date_valid = check_expiration_date(project_id, region, file_path)
 
-    # check driver age
-    is_driver_age_valid = check_driver_age(file_path) 
+    # check minimum driver age
+    is_driver_age_valid = check_driver_age(project_id, region, file_path) 
 
     is_valid = "KO"
     if is_exp_date_valid is True and is_driver_age_valid is True:
