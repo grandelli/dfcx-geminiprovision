@@ -10,13 +10,12 @@
 </head>
 <body>
   <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
-  <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/staging/df-messenger.js"></script>
+  <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
   <df-messenger
   project-id="[your-project-id]"
   agent-id="[your-agent-id]"
   language-code="en"
   intent="WELCOME"
-  gcs-upload="[your-bucket-name]"
   allow-feedback="all">
   <df-messenger-chat-bubble
     bot-actor-image="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Google_Bard_logo.svg/2048px-Google_Bard_logo.svg.png"
@@ -40,6 +39,9 @@
   }
 </style>
 <script>
+  globalThis.dfInstallUtils({
+    'gcs-bucket-upload': {bucketName: '[your-bucket-name]'},
+  });
   const dfMessenger = document.querySelector('df-messenger');
   dfMessenger.addEventListener('df-file-upload-completed', function (event) {
       dfMessenger.sendRequest('query','file uploaded');
