@@ -20,6 +20,26 @@ The aforementioned artifacts implement the following architecture.
 This is the procedure to setup the whole prototype. Feel free to change some of the configurations according to your needs.
 
 #### Google Cloud Functions
+Disclaimer: this code has been validated with Gemini 1.0 Pro Vision.
+
+You need to insert your project ID and selected region within `main.py`:
+
+    project_id = 'your-project-id'
+    region = 'your-region'
+
+After editing the file, zip both the cloud function files (`main.py` and `requirements.txt`) as a ZIP file (more info on the archive structure [here](https://cloud.google.com/functions/docs/writing#directory-structure)). 
+
+The settings for your cloud function should be:
+* **Function Name**: driving-license-webhook
+* **Environment**: 1st Gen
+* **Region**: your desired region
+* **Runtime**: Python 3.12
+* **Timeout**: 60 seconds (this is very important, since Gemini takes some time to return)
+* **Entry Point**: validate_driving_license
+* Allow all traffic (being a demo, I've relaxed my security requirements)
+* **Source**: the ZIP file you've just created
+
+Feel free to create the cloud function using the Google Cloud Console or `gcloud` command. More info [here](https://cloud.google.com/functions/docs/deploy#basics).
 
 #### Dialogflow Messenger (via Google App Engine)
 
