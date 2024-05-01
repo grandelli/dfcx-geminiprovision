@@ -39,7 +39,7 @@ The settings for your cloud function should be:
 * Allow all traffic (being a demo, I've relaxed my security requirements)
 * **Source**: the ZIP file you've just created
 
-Feel free to create the cloud function using the Google Cloud Console or `gcloud` command. More info [here](https://cloud.google.com/functions/docs/deploy#basics).
+Feel free to deploy the cloud function using the Google Cloud Console or `gcloud` command. More info [here](https://cloud.google.com/functions/docs/deploy#basics).
 
 #### Dialogflow Messenger (via Google App Engine)
 
